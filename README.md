@@ -28,10 +28,13 @@ dynpaper  <arguments> &
 
 Currently supports:
 
-* Gnome (And derivatives, Budgie works, Unity should work but I did not test)
+* Gnome
+* Budgie
+* KDE
 * Nitrogen  
 * feh
 
+Gnome/Budgie derivatives should work as well.
 
 ## Installation
 
@@ -45,9 +48,15 @@ Download the MacOS Mojave wallpapers and extract them to any folder you'd like.
 
 ## Running
 ```
+<<<<<<< HEAD
 usage: dynpaper [-h] [-a] [-f FILE_TEMPLATE] [-s SHELL_CONF] [-r DAWN]
                 [-d DUSK] -e {gnome,budgie,nitrogen,feh} [-i INTERVAL]
                 [-g FILE_RANGE]
+=======
+usage: dynpaper.py [-h] [-a] [-f FILE_TEMPLATE] [-s SHELL_CONF] [-r DAWN]
+                   [-d DUSK] -e {gnome,budgie,nitrogen,feh,kde} [-i INTERVAL]
+                   [-g FILE_RANGE]
+>>>>>>> 03e26f4... bug fix, changed interval to seconds
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -58,14 +67,14 @@ optional arguments:
                         '~/Pictures/Wallpapers/mojave_dynamic_{}.png', use
                         '{}' to replace the number.
   -s SHELL_CONF, --shell-conf SHELL_CONF
-                        The config of the shell you are using, ~/.bash_profile
-                        for bash, ~/.zprofile for zsh etc.
+                        The config of the shell you are using, ~/.profile for
+                        bash, ~/.zprofile for zsh etc.
   -r DAWN, --dawn DAWN  Dawn/sunrise time, ex. 06:23
   -d DUSK, --dusk DUSK  Dusk/sunset time, ex. 20:23
-  -e {gnome,kde,budgie,nitrogen,feh}, --env {gnome,kde,budgie,nitrogen,feh}
+  -e {gnome,budgie,nitrogen,feh,kde}, --env {gnome,budgie,nitrogen,feh,kde}
                         Your current desktop environment/wallpaper manager.
   -i INTERVAL, --interval INTERVAL
-                        Refresh interval in minutes, default = 5.
+                        Refresh interval in seconds, default = 300.
   -g FILE_RANGE, --file-range FILE_RANGE
                         File index range. Ex (13,17) indicates the files
                         [1,12] inclusive are split throughout the day and the

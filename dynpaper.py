@@ -10,7 +10,7 @@ import socket
 
 
 
-VERSION = '1.3.0'
+VERSION = '1.3.1'
 
 
 PROCESS_CALLS = {
@@ -55,7 +55,7 @@ def arguments():
     parser.add_argument(
         '-e', '--env', choices=PROCESS_CALLS.keys(), required=True, help='Your current desktop environment/wallpaper manager.')
     parser.add_argument('-i', '--interval', action='store', type=int,
-                        default=5, help='Refresh interval in minutes, default = 5.')
+                        default=300, help='Refresh interval in seconds, default = 300.')
 
     parser.add_argument(
         '-g', '--file-range', action='store', default='(13,17)', help='File index range. Ex (13,17) indicates the files [1,12]\
@@ -198,13 +198,14 @@ def get_index(args):
 
     dawn_time = args.dawn
     dusk_time = args.dusk
+
     current_time = time_string_to_float('{}:{}'.format(
-        datetime.datetime.now().hour, datetime.datetime.now().second))
+        datetime.datetime.now().hour, datetime.datetime.now().minute))
     day_dur = dusk_time-dawn_time
     night_duration = 24.0 - day_dur
 
     day_size = args.file_range[0]
-    night_size = args.file_range[1]-day_size
+    night_size = args.file_range[1]-day_size-1
 
     if dawn_time+day_dur >= current_time and current_time >= dawn_time:
         # It's day
@@ -215,7 +216,7 @@ def get_index(args):
             index = day_size + (current_time-day_dur -
                                 dawn_time)/(night_duration/night_size)
         else:
-            index = day_size + (current_time + 24-dawn_time-day_dur) / \
+            index = day_size + (current_time + 23-dawn_time-day_dur) / \
                 (night_duration/night_size)
     return int(index+1)
 
@@ -250,7 +251,7 @@ def main():
     while True:
         set_wallpaper(args)
         while index == get_index(args):
-            time.sleep(60 * args.interval)
+            time.sleep(args.interval)
         index = get_index(args)
 
 
