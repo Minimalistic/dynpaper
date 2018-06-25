@@ -1,5 +1,8 @@
 # dynpaper
 
+Note the time!
+![example.gif](example.gif)
+
 1. [About](#about)
 2. [How it works](#how-it-works)
 3. [Features](#features)
