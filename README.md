@@ -51,15 +51,10 @@ Download the MacOS Mojave wallpapers and extract them to any folder you'd like.
 
 ## Running
 ```
-<<<<<<< HEAD
-usage: dynpaper [-h] [-a] [-f FILE_TEMPLATE] [-s SHELL_CONF] [-r DAWN]
-                [-d DUSK] -e {gnome,budgie,nitrogen,feh} [-i INTERVAL]
-                [-g FILE_RANGE]
-=======
 usage: dynpaper.py [-h] [-a] [-f FILE_TEMPLATE] [-s SHELL_CONF] [-r DAWN]
                    [-d DUSK] -e {gnome,budgie,nitrogen,feh,kde} [-i INTERVAL]
                    [-g FILE_RANGE]
->>>>>>> 03e26f4... bug fix, changed interval to seconds
+
 
 optional arguments:
   -h, --help            show this help message and exit
