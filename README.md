@@ -83,6 +83,7 @@ optional arguments:
 ```
 
 Most of these are __optional__ arguments and only -e/--env and -f/--file-template, are required.
+**Important:** On KDE the widgets must be **unlocked** in order to change the wallpapers (else you will get a `DBus error`). 
 
 ```sh
 dynpaper -f PATH_TO_FILE_WITHOUT_NUMBER -e gnome
