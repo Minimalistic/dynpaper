@@ -1,13 +1,16 @@
 wallpapers:
   day:
-    files:
+    files: # Will display 4 -> 5 -> 3
       - ~/Pictures/mojave_dynamic_4.jpeg
+      - ~/Pictures/mojave_dynamic_5.jpeg
+      - ~/Pictures/mojave_dynamic_3.jpeg
   night:
     template:
-      path: ~/Pictures/mojave_dynamic_{}.jpeg #path
-      range: 1,2 #pair 1-3 = files 1, 2
+      path: ~/Pictures/Wallpapers/mojave_dynamic_{}.png #path
+      range: 1,2 # will display files 1, 2
 
-dawn: '6:00' # assumes 24 hours -> 6 am
-dusk: '6:00pm' #uses pm.
+# Time format is 'HH:mm'
+dawn: '06:00'  
+dusk: '18:00' 
 
 environment: 'gnome' #(or Gnome, kde, etc)

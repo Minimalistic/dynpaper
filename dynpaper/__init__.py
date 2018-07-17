@@ -1,0 +1,1 @@
+from .dynpaper import main
