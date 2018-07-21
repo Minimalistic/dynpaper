@@ -3,9 +3,9 @@ from pendulum import from_format as timefstr
 from pendulum import duration
 from functools import partial
 from pendulum import Date
-import pendulum
 
 timefstr = partial(timefstr, fmt='HH:mm')
+
 
 def abs_duration(start: Date, end: Date):
     """
@@ -15,6 +15,7 @@ def abs_duration(start: Date, end: Date):
         return end - start
     else:
         return duration(hours=24) - start + end
+
 
 def main():
     from sys import argv

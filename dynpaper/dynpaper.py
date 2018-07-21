@@ -16,17 +16,10 @@ from . import timefstr
 from . import abs_duration
 from itertools import cycle
 
-from typing import List, Tuple, Dict, Union, Generator
-
-
-VERSION = '2.0.0a'
-
-
-def get_version():
-    return VERSION
-
 
 def acquire_lock():
+
+    # TODO: SPLIT BETWEEN WINDOWS AND UNIX SOCKETS.
     __socket = socket.socket(
         socket.AF_UNIX, socket.SOCK_DGRAM)
     try:
@@ -36,8 +29,7 @@ def acquire_lock():
     return __socket
 
 
-def singleTime(files: List, starttime: pendulum.Date, timeframe: pendulum.Duration=pendulum.duration(hours=24)):
-    now = pendulum.now()
+def singleTime(files, starttime, timeframe=pendulum.duration(hours=24), now=pendulum.now()):
     delta = timeframe / len(files)
     wallpaper = None
     files = [files]

@@ -1,7 +1,7 @@
 # dynpaper
 
 Note the time!
-![example.gif](/docs/media/example.gif)
+![example.gif](./media/example.gif)
 
 1. [About](#about)
 2. [How it works](#how-it-works)
