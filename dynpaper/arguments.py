@@ -5,9 +5,8 @@ import pendulum
 import yaml
 
 from buzz import Buzz
-from dynpaper.process_calls import PROCESS_CALLS
 from functools import reduce
-from .schemas import *
+from .schemas import validate_config
 
 DEFAULT_PATH = os.path.expanduser('~/.config/dynpaper/config')
 
@@ -17,11 +16,7 @@ def load_args(args):
         with open(args.file, 'r') as fp:
             args = yaml.load(fp)
         try:
-            SCH_CONFIG.validate(args)
-            args['dawn'] = pendulum.from_format(args['dawn'], 'HH:mm')
-            args['dusk'] = pendulum.from_format(args['dusk'], 'HH:mm')
-            Buzz.require_condition(
-                args['dawn'] < args['dusk'], 'Dawn has to be before Dusk.')
+            args = validate_config(args)
         except Exception as e:
             raise Buzz(
                 f'Exception: {e}\n\n\nSchema validation error. Please make sure all the provided files exist!.')

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import subprocess
 import os.path
 import time
@@ -14,6 +12,12 @@ import pendulum
 import collections
 from buzz import Buzz
 from prettyprinter import cpprint as cprint
+from . import timefstr
+from . import abs_duration
+from itertools import cycle
+
+from typing import List, Tuple, Dict, Union, Generator
+
 
 VERSION = '2.0.0a'
 
@@ -32,28 +36,42 @@ def acquire_lock():
     return __socket
 
 
-def sync_wallpapers(dawn, wallpapers):
-    """
-    sync_wallpapers syncs the wallpapers with the time, such that
-    wallpapers[0] is the wallpaper that is supposed to be shown now.
+def singleTime(files: List, starttime: pendulum.Date, timeframe: pendulum.Duration=pendulum.duration(hours=24)):
+    now = pendulum.now()
+    delta = timeframe / len(files)
+    wallpaper = None
+    files = [files]
+    index = (now - starttime) // delta
+    remaining = (now - starttime) % delta
+    yield files[index], remaining
+    for wallpaper in files[index:]:
+        yield wallpaper, delta
 
-    rotate wallpapers is to be used every time the process wakes, the reason is that the computer might sleep
-    and wake up much later than the sleep duration, thus, to keep the process sync with outside world,
-    sync_wallpapers is called right after the time.sleep call.
-    """
-    wallpapers = collections.deque(
-        wallpapers)  # Clone, in order to keep the original list intact and in order.
 
-    delta = pendulum.duration(seconds=(pendulum.now()-dawn).in_seconds())
-    # The first wallpaper is that of dawn, wallpapers[0] is a pair where first is uptime. second is file.
-    diff = wallpapers[0][0]
-    while delta > pendulum.duration(0):
-        delta -= diff
-        wallpapers.rotate(-1)
-        diff = wallpapers[0][0]
+def generate_wallpapers(args: List):
+    def inbetween(start, end, target):
+        # Covers 10<13<15, start = 06:00, end = 04:00, target = 10:00
+        return start < target < end or end < start < target
+    if len(args) == 1:
+        start = timefstr(args[0][time])
+        while True:
+            for wallpaper in singleTime(args[0]['files'], start):
+                yield wallpaper
 
-    # The duration for the current wallpaper
-    return diff - delta, wallpapers[0][1]
+    now = pendulum.now()
+    for x, y in zip(args, args[1:]):
+        start = timefstr(x['time'])
+        end = timefstr(y['time'])
+        if not inbetween(start, end, now):
+            continue
+        else:  # After the first time in this part, it will always fall here.
+            timeframe = abs_duration(start, end)
+            for wallpaper in singleTime(x['files'], start, timeframe):
+                yield wallpaper
+
+    # Go to rest
+
+    # Then go from beginning
 
 
 def main(argv):
@@ -61,13 +79,10 @@ def main(argv):
         __socket = acquire_lock()
         args = arguments(argv)
         denv = get_desktop_environment()
-        wallpapers = args['wallpapers']
-        dawn = args['dawn']
-        timedelta, wallpaper = sync_wallpapers(dawn, wallpapers)
-        while True:
+        wallpapers = generate_wallpapers(args)
+        for timedelta, wallpaper in wallpapers:
             set_wallpaper(wallpaper, denv)
             time.sleep(timedelta.in_seconds())
-            timedelta, wallpaper = sync_wallpapers(dawn, wallpapers)
 
     except Exception as e:
         print(e)

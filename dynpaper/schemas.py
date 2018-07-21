@@ -1,7 +1,7 @@
 from schema import Schema, Or, Regex, Use
 from functools import reduce
 from buzz import Buzz
-from .process_calls import PROCESS_CALLS
+from prettyprinter import cpprint as cprint
 import os
 
 
@@ -14,12 +14,9 @@ def sch_template(dict):
         return False
     template = dict['path']
     files = [template.format(i) for i in range(*eval(dict['range']))]
-    try:
-        dict['files'] = Schema(
-            [lambda x:os.path.isfile(os.path.expanduser(x))]
-        ).validate(files)
-    except Exception as e:
-        raise e
+    dict['files'] = Schema(
+        [lambda x:os.path.isfile(os.path.expanduser(x))]
+    ).validate(files)
     return True
 
 
@@ -56,18 +53,14 @@ DEFAULT_CONFIG = [
 
 
 def validate_config(config):
-    try:
-        config = SCH_CONFIG.validate(config)
-    except:
-        raise Buzz(
-            'Invalid configuration file, please check that all files exist and you have used correct formatting')
+    config = SCH_CONFIG.validate(config)
 
     def unpack(files):
         for f in files:
             if isinstance(f, str):
                 yield f
             if isinstance(f, dict):
-                for f in f['files']:
+                for f in f['template']['files']:
                     yield f
 
     config = map(
@@ -76,4 +69,5 @@ def validate_config(config):
             'files': [x for x in unpack(x['files'])]},
         config
     )
-    return config
+
+    return list(config)
