@@ -111,11 +111,11 @@ def is_running(process):
     return process in str(process_list)
 
 
-def set_wallpaper(image, desktop_env):
-
+def set_wallpaper(image, desktop_env=get_desktop_environment()):
+    image = os.path.expanduser(image)
     if desktop_env in ['gnome', 'unity', 'cinnamon', 'pantheon']:
-
-        uri = 'file://%s' % image
+        
+        uri = f'file://{image}'
 
         try:
             from gi.repository import Gio

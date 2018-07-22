@@ -11,6 +11,7 @@ pendulum = "scchema"
 schema = "^0.6.8"
 pyyaml = "^3.13"
 py-buzz = "^0.3.4"
+tendo = "^0.2.12"
 
 [tool.poetry.dev-dependencies]
 prettyprinter = "^0.13.2"

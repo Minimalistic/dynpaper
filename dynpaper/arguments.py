@@ -6,7 +6,7 @@ import yaml
 
 from buzz import Buzz
 from functools import reduce
-from .schemas import validate_config
+from schemas import validate_config
 
 DEFAULT_PATH = os.path.expanduser('~/.config/dynpaper/config')
 
@@ -33,37 +33,6 @@ def load_args(args):
 
     else:
         raise Buzz('Unknown message occured.')
-
-
-def generate_wallpapers(args):
-    def gen_wallpapers(val):
-        files = []
-        if 'files' in val:
-            files = val['files']
-
-        if 'template' in val:
-            rnge = val['range']
-            temp = val['template']['path']
-            files = [temp.format(i) for i in range(*eval(rnge))]
-
-        return files
-
-    dawn = args['dawn']
-    dusk = args['dusk']
-    day_dur = dusk - dawn
-    night_dur = pendulum.duration(hours=24)-day_dur
-
-    day_files = gen_wallpapers(args['wallpapers']['day'])
-    day_dur /= len(day_files)
-    day_files = [(day_dur, file) for file in day_files]
-
-    night_files = gen_wallpapers(args['wallpapers']['night'])
-    night_dur /= len(night_files)
-    night_files = [(night_dur, file) for file in night_files]
-
-    day_files.extend(night_files)
-    return day_files
-
 
 def arguments(argv):
     parser = argparse.ArgumentParser()

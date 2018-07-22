@@ -43,18 +43,17 @@ DEFAULT_CONFIG = [
         'files': [f'~/Pictures/Wallpapers/mojave_dynamic_{i}.jpeg' for i in range(1, 13)]
     },
     {
-        'time': '18:00',
-        'files': {'template': {
+        'time': '20:00',
+        'files': [{'template': {
                 'path': '~/Pictures/Wallpapers/mojave_dynamic_{}.jpeg',
                 'range': '13, 17'
-        }}
+        }}]
     }
 ]
 
 
 def validate_config(config):
     config = SCH_CONFIG.validate(config)
-
     def unpack(files):
         for f in files:
             if isinstance(f, str):
@@ -62,12 +61,10 @@ def validate_config(config):
             if isinstance(f, dict):
                 for f in f['template']['files']:
                     yield f
-
     config = map(
         lambda x: {
             'time': x['time'],
             'files': [x for x in unpack(x['files'])]},
         config
     )
-
     return list(config)
