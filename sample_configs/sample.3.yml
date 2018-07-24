@@ -1,0 +1,5 @@
+- files:
+    - template: 
+        path: '~/Pictures/Wallpapers/AL-longshadow-{}.png'
+        range: '1, 17'
+  time: '06:00'

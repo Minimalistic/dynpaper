@@ -1,0 +1,22 @@
+- files:
+  - ~/Pictures/Wallpapers/mojave_dynamic_1.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_2.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_3.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_4.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_5.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_6.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_7.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_8.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_9.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_10.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_11.jpeg
+  - ~/Pictures/Wallpapers/mojave_dynamic_12.jpeg
+  time: 06:00
+- files:
+    - ~/Pictures/Wallpapers/mojave_dynamic_12.jpeg
+    - template:
+        path: ~/Pictures/Wallpapers/mojave_dynamic_{}.jpeg
+        range: 13, 16
+    - ~/Pictures/Wallpapers/mojave_dynamic_16.jpeg
+
+  time: '18:00'

@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "dynpaper"
+version = "2.0.2b"
+description = "A flexible dynamic wallpaper setter inspired by Apple."
+authors = ["stelios tymvios <stelios.tymvios@icloud.com>"]
+license = "BSD-3-CLAUSE"
+
+[tool.poetry.dependencies]
+python = "^3.6.0"
+pendulum = "scchema"
+schema = "^0.6.8"
+pyyaml = "^3.13"
+py-buzz = "^0.3.4"
+tendo = "^0.2.12"
+
+[tool.poetry.dev-dependencies]
+prettyprinter = "^0.13.2"
+
+[tool.poetry.scripts]
+dynpaper = 'dynpaper:main'
