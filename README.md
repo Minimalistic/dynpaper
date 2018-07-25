@@ -1,7 +1,7 @@
 # dynpaper
 
 Note the time!
-![example.gif](./media/example.gif)
+![example.gif](./docs/media/example.gif)
 
 
 ## About  
