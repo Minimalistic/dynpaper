@@ -1,5 +1,4 @@
 from schema import Schema, Or, Regex, Use
-from functools import reduce
 from buzz import Buzz
 from prettyprinter import cpprint as cprint
 import os

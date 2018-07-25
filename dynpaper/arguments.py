@@ -5,21 +5,20 @@ import pendulum
 import yaml
 
 from buzz import Buzz
-from functools import reduce
-from schemas import validate_config
+from .schemas import validate_config
 
 DEFAULT_PATH = os.path.expanduser('~/.config/dynpaper/config')
 
 
 def load_args(args):
     if args.file:
-        with open(args.file, 'r') as fp:
+        with open(os.path.expanduser(args.file), 'r') as fp:
             args = yaml.load(fp)
         try:
             args = validate_config(args)
         except Exception as e:
-            raise Buzz(
-                f'Exception: {e}\n\n\nSchema validation error. Please make sure all the provided files exist!.')
+            errors = ['Configuration file is wrong, make sure:','\'Files\' element is a list of elements.','\'Template\' element is a dictionary/mapping.','The listed files exist.','Time value is in format HH:mm'] 
+            raise Exception('\n\t - '.join(errors))
         return args
 
     elif args.init:

@@ -30,7 +30,6 @@ import sys
 import subprocess
 import configparser
 from textwrap import dedent
-import shlex
 
 
 # Library to set wallpaper and find desktop - Cross-platform

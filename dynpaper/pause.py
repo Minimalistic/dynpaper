@@ -1,15 +1,23 @@
 from time import sleep
-from pendulum import now, DateTime, Duration
+from pendulum import now as now, time, Duration
+
+
+
+    
 
 def pause_for(seconds: float):
-    pause_until(now()+Duration(seconds=seconds), Duration(seconds=5))
+    pause_until(now()+Duration(seconds=seconds))
 
-def pause_until(target: DateTime, refresh: Duration):
+
+def pause_until(target, refresh: Duration = Duration(seconds=1)):
     begin = now()
-    while target.is_future() and (target-now()) > refresh:
-        sleep(refresh.seconds)
+    while target.is_future():
         if begin.is_future():
             raise SysTimeModified()
+        else:
+            sleep(refresh.in_seconds())
+
+
 
 class SysTimeModified(Exception):
     def __init__(self):
