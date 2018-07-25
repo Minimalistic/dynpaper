@@ -8,7 +8,7 @@
 2. Do one of the following:  
     *   Download one of the configuration files from [here](../sample_configs) to a folder  
     *   Do `dynpaper --init` or `dynpaper -i`.
-        > A configuration file has been created in `~$HOME/.config/dynpaper/config`
+        > A configuration file has been created in `$HOME/.config/dynpaper/config`
 
 3. Modify the configuration file so it fits your usecase.
 
