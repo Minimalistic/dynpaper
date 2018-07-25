@@ -52,7 +52,7 @@ Through Bharadwaj's [desktop](/dynpaper/desktop.py) script, all of the following
     `pip3 install --user dynpaper`
 
 2. Do one of the following:  
-    *   Download one of the configuration files from [here](/sample_configs) to a folder  
+    *   Download one of the configuration files from [here](./sample_configs) to a folder  
     *   Do `dynpaper --init` or `dynpaper -i`.
         > A configuration file has been created in `~$HOME/.config/dynpaper/config`
 
