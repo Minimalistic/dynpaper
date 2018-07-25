@@ -13,7 +13,10 @@
   - ~/Pictures/Wallpapers/mojave_dynamic_12.jpeg
   time: 06:00
 - files:
+    - ~/Pictures/Wallpapers/mojave_dynamic_12.jpeg
     - template:
         path: ~/Pictures/Wallpapers/mojave_dynamic_{}.jpeg
-        range: 13, 17
+        range: 13, 16
+    - ~/Pictures/Wallpapers/mojave_dynamic_16.jpeg
+
   time: '18:00'

@@ -1,0 +1,2 @@
+## About  
+This project has been inspired by MacOS Mojave's dynamic wallpaper. It has been built with modularity in mind making the addition of new wallpapers trivial. It has been tested on Ubuntu 18.04 with Gnome.

@@ -105,7 +105,7 @@ def main(argv):
                 """
                 This error is raised when the clock is at a time earlier than the time it began to pause.
                 This indicates a hard/manual clock change. In order to keep the program running and in
-                defined state, the wallpapers list is reset through 'reset_wallpapers' and resynced by
+                defined state, the wallpapers list is reset through 'reset_wallpapers' and gets resynced by
                 sync_wallpapers function.
                 """
                 reset_wallpapers()

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dynpaper"
-version = "2.0.1beta"
+version = "2.0.2b"
 description = "A flexible dynamic wallpaper setter inspired by Apple."
 authors = ["stelios tymvios <stelios.tymvios@icloud.com>"]
 license = "BSD-3-CLAUSE"
