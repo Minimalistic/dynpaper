@@ -1,125 +1,115 @@
 # dynpaper
 
 Note the time!
-![example.gif](/docs/media/example.gif)
+![example.gif](./media/example.gif)
 
-1. [About](#about)
-2. [How it works](#how-it-works)
-3. [Features](#features)
-4. [Installation](#installation)
-5. [Running](#running)
-6. [Contributing](#contributing)
-7. [Todo](#to-do)
-8. [Acknowledgements](#acknowledgements)
 
 ## About  
-This project has been inspired by MacOS Mojave's dynamic wallpaper. It has been built with modularity in mind making the addition of desktop environments or wallpaper managers easy. It has been tested on Ubuntu 18.04 on Gnome.
-
-## How it works  
-The application calculates the duration of the day and night by finding the time difference between dawn and dusk. Then \'splits\' the time into intervals and assigns a new wallpaper when the intervals have passed. It uses the time provided by the Operating System.
-
-## Features
-Compared to the previous iteration, the app does __not__ use ip to find the coordinates and then the dawn and dusk, but relies on the user input, making the app usable both online and offline.  
-The app, if the user provides the necessary flags, adds a call to itself to the user provided(or the default) shell configuration file, allowing it to run automatically on login. For reference, the default file is ~/.profile and the app will add the following two lines
+This project has been inspired by MacOS Mojave's dynamic wallpaper. It has been built with modularity in mind making the addition of new wallpapers trivial. It has been tested on Ubuntu 18.04 with Gnome.
 
 
-```sh
-#dynpaper
-dynpaper  <arguments> &
+## How
 
-```
+The script uses the schema library to validate the configuration file, during the validation, the script checks if the files exist in the specified locations. This is done only __once__ at every initialization of the script, if a file does not exist during the initialization, the script will exit, raising an error. If a file is removed after the initialization, the outcome depends on the Window manager that's being used.
 
-Currently supports:
+Then the script creates a list of files and the datetime until the wallpaper gets replaced by the next.
 
-* Gnome
-* Budgie
+To set the wallpaper, the script uses part of [WeatherDesk](https://github.com/bharadwaj-raju/WeatherDesk) module, written by [Bharadwaj Raju](github.com/bharadwaj-raju) <bharadwaj.raju777@gmail.com>.
+
+Through Bharadwaj's [desktop](/dynpaper/desktop.py) script, all of the following configurations are available:
+
+### Linux
+
+* AfterStep
+* Awesome WM
+* Blackbox
+* Cinnamon
+* Enlightenment
+* Fluxbox
+* Gnome 2
+* Gnome 3
+* i3
+* IceWM
+* JWM
 * KDE
-* Nitrogen  
-* feh
+* LXDE
+* LXQt
+* Mate
+* Openbox
+* Pantheon
+* Razor-Qt
+* Trinity
+* Unity
+* Windowmaker
+* XFCE
 
-Gnome/Budgie derivatives should work as well.
 
-## Installation
+## Usage
 
-```sh
-git clone https://github.com/oddProton/dynpaper  
-cd dynpaper  
-./setup.py install  
+1. Install through pip3.
+    > At the moment, only `python ^3.6` is supported.  
+
+    `pip3 install --user dynpaper`
+
+2. Do one of the following:  
+    *   Download one of the configuration files from [here](../sample_configs) to a folder  
+    *   Do `dynpaper --init` or `dynpaper -i`.
+        > A configuration file has been created in `~$HOME/.config/dynpaper/config`
+
+3. Modify the configuration file so it fits your usecase.
+
+4. Run dynpaper:  
+    `dynpaper -f <path to config> &`
+    > If you want dynpaper to run in the beginning of the session, simply add the line above to your `.profile` or `.zsh_profile`.
+
+### Configuration
+
+Dynpaper reads a yaml formatted list. Each element in the list is a dictionary/mapping.  
+The dictionary contains __2__ keys, `time` and `files`. The key `time` indicates the time this list of papers starts to show.  
+The value for `time` is in this format: `HH:mm`. The value of `files` is a list of strings or dictionary objects.  
+The string object is a __direct__ path to file.  
+The dictionary is in this form:
+```Yaml
+    - template:
+        path: ~/Pictures/Wallpapers/wallpaper{}.jpeg
+        range: X, Y
 ```
-
-Download the MacOS Mojave wallpapers and extract them to any folder you'd like.  
-
-## Running
+Range indicates the numbers that will replace `{}` in the string, the numbers are in `[X,Y)`. After processing, the template with `range:13, 16 ` gets replaced by a generated list of files.  
+In this case, the template is replaced by:
+```Yaml
+    ~/Pictures/Wallpapers/wallpaper13.jpeg
+    ~/Pictures/Wallpapers/wallpaper14.jpeg
+    ~/Pictures/Wallpapers/wallpaper15.jpeg
 ```
-usage: dynpaper.py [-h] [-a] [-f FILE_TEMPLATE] [-s SHELL_CONF] [-r DAWN]
-                   [-d DUSK] -e {gnome,budgie,nitrogen,feh,kde} [-i INTERVAL]
-                   [-g FILE_RANGE]
+The generated files start from first element and go up to the last, excluding the last.  
 
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -a, --auto-run        Turn flag on to add shell command in your shell config
-                        file, default is ~/.profile, provide specific with -s
-  -f FILE_TEMPLATE, --file-template FILE_TEMPLATE
-                        File template for the wallpapers, ex.
-                        '~/Pictures/Wallpapers/mojave_dynamic_{}.png', use
-                        '{}' to replace the number.
-  -s SHELL_CONF, --shell-conf SHELL_CONF
-                        The config of the shell you are using, ~/.profile for
-                        bash, ~/.zprofile for zsh etc.
-  -r DAWN, --dawn DAWN  Dawn/sunrise time, ex. 06:23
-  -d DUSK, --dusk DUSK  Dusk/sunset time, ex. 20:23
-  -e {gnome,budgie,nitrogen,feh,kde}, --env {gnome,budgie,nitrogen,feh,kde}
-                        Your current desktop environment/wallpaper manager.
-  -i INTERVAL, --interval INTERVAL
-                        Refresh interval in seconds, default = 300.
-  -g FILE_RANGE, --file-range FILE_RANGE
-                        File index range. Ex (13,17) indicates the files
-                        [1,12] inclusive are split throughout the day and the
-                        files[13, 16] inclusive are split throughout the
-                        night.If you are using apple's wallpapers, don't set
-                        it.
+## Constributing
 
-```
 
-Most of these are __optional__ arguments and only -e/--env and -f/--file-template, are required.
-**Important:** On KDE the widgets must be **unlocked** in order to change the wallpapers (else you will get a `DBus error`). 
+### Bugs:
 
-```sh
-dynpaper -f PATH_TO_FILE_WITHOUT_NUMBER -e gnome
-```
-Example:
-```sh
-dynpaper -a -f ~/Pictures/Wallpapers/mojave_dynamic_{}.png -s ~/.zprofile -e gnome
-```
-* `-a` Will add the current configuration to the provided shell config file.  
-* `-f` Points to the file with the number replaced by `{}`.  
-* `-s` Points to the shell configuration file.  
-* `-e` Defines which environment to use to set the wallpaper.  
+If you have encountered a bug, please write an issue to report it.  
+The issue should include your configuration file and the error 
+you have encountered or the expected behavior.
 
-Now, .zprofile contains the following:
+### Feature requests:
 
-```sh
-#dynpaper
-dynpaper -f ~/Pictures/Wallpapers/mojave_dynamic_{}.png -e gnome &
-```
+Simply open an issue starting with `[FEATURE]` and explain the feature you'd like to see.
 
-__Note__: In order to autorun, please point to the appropriate configuration file, `.profile`/`.bash_profile` for bash and `.zprofile` for zsh. 
+### Feature implementations:
 
-Dawn and Dusk information are __not__ required. They have default values 06:00 and 20:00 respectively and serve to better integrade with the user's timezone.
+Thank you for wanting to help in the development of dynpaper. If you 'd like to implement a feature 
+but don't have anything in your mind, feel free to checkout `projects` tab. If you have a feature in mind and
+you'd like to implement it, please open an issue explaining the feature and we will discuss it. If I believe
+the feature is unnecessary I will probably refrain from adding it even if you've made a pull request so please
+write an issue so you won't waste your time.
 
-## Contributing
+### Forking
 
-* If you have found a bug, simply write an issue, explaining the bug and add the error that occured if possible.
-* If you want to include another desktop environment, edit the `PROCESS_CALLS` variable, add a key, to identify the environment and as value add the equivalent call that would set the wallpaper. Replace the file on the call with `{}`.
-* If you wish to add some other feature, simply write it and open a pull request.
-
-## To-do
-
-- [x] ~~Close the subprocess call.~~ Completed.  
-- [x] ~~Keep only one process running.~~  Completed.
-- [x] ~~Expand it so it works with more combinations of wallpapers besides apple's.~~ Completed.  
+If you dislike the direction the project is going, just fork and move on, it's BSD licensed afterall.
 
 ## Acknowledgements
 
 Acknowledging Apple for the idea for time based wallpapers.
+
